@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { SearchPanel } from "./search-panel";
 import { List } from "./list";
+import qs from "qs";
+import { cleanObject, useDebounce, useMount } from "../../utils";
 
 const apiUrl = process.env.REACT_APP_BASE_URL;
 export const ProjectListScreen = () => {
@@ -10,26 +12,29 @@ export const ProjectListScreen = () => {
     // input 输入参数
     const [param, setParam] = useState({
         name: "",
-        personId: "",
+        id: "",
     });
     // table 展示的请求结果
     const [list, setList] = useState([]);
+    const debouncedValue = useDebounce(param, 2000);
 
     useEffect(() => {
-        fetch(`${apiUrl}/projects`).then(async (response) => {
+        fetch(
+            `${apiUrl}/projects?${qs.stringify(cleanObject(debouncedValue))}`
+        ).then(async (response) => {
             if (response.ok) {
                 setList(await response.json());
             }
         });
-    }, [param]);
+    }, [debouncedValue]);
 
-    useEffect(() => {
+    useMount(() => {
         fetch(`${apiUrl}/users`).then(async (response) => {
             if (response.ok) {
                 setUsers(await response.json());
             }
         });
-    }, []);
+    });
 
     return (
         <div>
