@@ -12,11 +12,11 @@ export const ProjectListScreen = () => {
     // input 输入参数
     const [param, setParam] = useState({
         name: "",
-        id: "",
+        personId: "",
     });
     // table 展示的请求结果
     const [list, setList] = useState([]);
-    const debouncedValue = useDebounce(param, 2000);
+    const debouncedValue = useDebounce(param, 200);
 
     useEffect(() => {
         fetch(

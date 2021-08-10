@@ -1,4 +1,18 @@
-export const SearchPanel = ({ users, param, setParam }) => (
+export interface User {
+    name: string;
+    id: number;
+}
+
+interface SearchPanelProps {
+    users: User[];
+    param: {
+        name: string;
+        personId: string;
+    };
+    setParam: (param: SearchPanelProps["param"]) => void;
+}
+
+export const SearchPanel = ({ users, param, setParam }: SearchPanelProps) => (
     <form>
         <input
             type="text"
@@ -15,7 +29,7 @@ export const SearchPanel = ({ users, param, setParam }) => (
             onChange={(evt) =>
                 setParam({
                     ...param,
-                    id: evt.target.value,
+                    personId: evt.target.value,
                 })
             }
         >
