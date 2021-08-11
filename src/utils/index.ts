@@ -32,3 +32,29 @@ export const useDebounce = <V>(value: V, delay?: number) => {
 
     return debouncedValue;
 };
+
+export const useArray = <V>(arr: Array<V>) => {
+    const [value, setValue] = useState(arr);
+
+    const clear: () => void = () => {
+        setValue([]);
+    };
+
+    const removeIndex = (index: number): void => {
+        const res = [...value];
+        res.splice(index, 1);
+        setValue(res);
+    };
+
+    const add = (item: V): void => {
+        const res = [...value, item];
+        setValue(res);
+    };
+
+    return {
+        value,
+        clear,
+        removeIndex,
+        add,
+    };
+};
