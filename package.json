@@ -1,69 +1,73 @@
 {
-    "name": "react-jira",
-    "version": "0.1.0",
-    "private": true,
-    "dependencies": {
-        "@testing-library/jest-dom": "^5.11.4",
-        "@testing-library/react": "^11.1.0",
-        "@testing-library/user-event": "^12.1.10",
-        "@types/jest": "^26.0.15",
-        "@types/node": "^12.0.0",
-        "@types/react-dom": "^17.0.0",
-        "qs": "^6.10.1",
-        "react": "^17.0.2",
-        "react-dom": "^17.0.2",
-        "react-scripts": "4.0.3",
-        "typescript": "^4.1.2",
-        "web-vitals": "^1.0.1"
-    },
-    "scripts": {
-        "start": "react-scripts start",
-        "build": "react-scripts build",
-        "test": "react-scripts test",
-        "eject": "react-scripts eject",
-        "prepare": "husky install",
-        "json-server": "json-server __JSON_SERVER_MOCK__/db.json --watch --port 3001"
-    },
-    "eslintConfig": {
-        "extends": [
-            "react-app",
-            "react-app/jest",
-            "prettier"
-        ]
-    },
-    "browserslist": {
-        "production": [
-            ">0.2%",
-            "not dead",
-            "not op_mini all"
-        ],
-        "development": [
-            "last 1 chrome version",
-            "last 1 firefox version",
-            "last 1 safari version"
-        ]
-    },
-    "devDependencies": {
-        "@commitlint/cli": "^13.1.0",
-        "@commitlint/config-conventional": "^13.1.0",
-        "@types/qs": "^6.9.7",
-        "@types/react": "^17.0.16",
-        "eslint-config-prettier": "^8.3.0",
-        "husky": ">=6",
-        "lint-staged": ">=10",
-        "prettier": "2.3.2"
-    },
-    "lint-staged": {
-        "*.{js,jsx,css,md,ts,tsx}": "prettier --write"
-    },
-    "babel": {
-        "presets": [
-            [
-                "react-app",
-                {
-                    "runtime": "automatic"
-                }
-            ]
-        ]
-    }
+  "name": "react-jira",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "@types/jest": "^26.0.15",
+    "@types/node": "^12.0.0",
+    "@types/react-dom": "^17.0.0",
+    "jira-dev-tool": "^1.7.61",
+    "qs": "^6.10.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "4.0.3",
+    "typescript": "^4.1.2",
+    "web-vitals": "^1.0.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "prepare": "husky install",
+    "json-server": "json-server __JSON_SERVER_MOCK__/db.json --watch --port 9001 --middlewares ./__JSON_SERVER_MOCK__/middleware.js"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest",
+      "prettier"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^13.1.0",
+    "@commitlint/config-conventional": "^13.1.0",
+    "@types/qs": "^6.9.7",
+    "@types/react": "^17.0.16",
+    "eslint-config-prettier": "^8.3.0",
+    "husky": ">=6",
+    "lint-staged": ">=10",
+    "prettier": "2.3.2"
+  },
+  "lint-staged": {
+    "*.{js,jsx,css,md,ts,tsx}": "prettier --write"
+  },
+  "babel": {
+    "presets": [
+      [
+        "react-app",
+        {
+          "runtime": "automatic"
+        }
+      ]
+    ]
+  },
+  "msw": {
+    "workerDirectory": "public"
+  }
 }
