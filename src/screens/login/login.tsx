@@ -1,25 +1,8 @@
 import { FormEvent } from "react";
-
-interface LoginParam {
-    username: string;
-    password: string;
-}
-
-const apiUrl = process.env.REACT_APP_BASE_URL;
+import { useAuth } from "../../context/auth-context";
 
 export const Login = () => {
-    const login = (param: LoginParam) => {
-        fetch(`${apiUrl}/login`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(param),
-        }).then(async (response) => {
-            if (response.ok) {
-            }
-        });
-    };
+    const { user, login } = useAuth();
 
     const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
         evt.preventDefault();
@@ -44,6 +27,9 @@ export const Login = () => {
                 </div>
                 <button type="submit">登录</button>
             </form>
+            <div>
+                {user ? <div>登录成功！用户名为：{user?.name}</div> : null}
+            </div>
         </div>
     );
 };
