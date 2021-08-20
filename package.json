@@ -78,7 +78,8 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "json-server": "json-server __JSON_SERVER_MOCK__/db.json --watch --port 3001 --middlewares ./__JSON_SERVER_MOCK__/middleware.js"
   },
   "eslintConfig": {
     "extends": [

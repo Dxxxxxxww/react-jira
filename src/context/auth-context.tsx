@@ -16,6 +16,7 @@ const AuthContext = React.createContext<
       }
     | undefined
 >(undefined);
+AuthContext.displayName = "AuthContext";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);

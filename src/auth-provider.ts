@@ -1,3 +1,4 @@
+// 模拟第三方auth服务
 import { User } from "./screens/project-list/search-panel";
 
 const localStorageKey = "__auth_provider_token__";
