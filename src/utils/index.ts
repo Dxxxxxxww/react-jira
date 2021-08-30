@@ -1,7 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 export const isFalsy = (param: unknown) => (param === 0 ? false : !param);
 
+/**
+ * @description 清除对象上没有值的键
+ * @param object 需要清理的对象
+ * @returns 清理完成的对象
+ */
 export const cleanObject = (object: object) => {
     const result = { ...object };
     Object.keys(result).forEach((key) => {
@@ -55,6 +60,6 @@ export const useArray = <V>(arr: Array<V>) => {
         value,
         clear,
         removeIndex,
-        add,
+        add
     };
 };

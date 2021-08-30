@@ -1,6 +1,6 @@
-import React, { ReactNode, useContext, useState } from "react";
-import * as auth from "auth-provider";
-import { User } from "../screens/project-list/search-panel";
+import React, { ReactNode, useContext, useState } from 'react';
+import * as auth from 'auth-provider';
+import { User } from '../screens/project-list/search-panel';
 
 interface AuthForm {
     username: string;
@@ -16,7 +16,7 @@ const AuthContext = React.createContext<
       }
     | undefined
 >(undefined);
-AuthContext.displayName = "AuthContext";
+AuthContext.displayName = 'AuthContext';
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 export const useAuth = () => {
     const context = useContext(AuthContext);
     if (!context) {
-        throw new Error("useAuth 必须在 AuthProvider 中使用");
+        throw new Error('useAuth 必须在 AuthProvider 中使用');
     }
     return context;
 };

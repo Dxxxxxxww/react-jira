@@ -1,8 +1,8 @@
-import { FormEvent } from "react";
-import { useAuth } from "../../context/auth-context";
+import { FormEvent } from 'react';
+import { useAuth } from '../../context/auth-context';
 
 export const Login = () => {
-    const { user, login } = useAuth();
+    const { login } = useAuth();
 
     const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
         evt.preventDefault();
@@ -27,9 +27,6 @@ export const Login = () => {
                 </div>
                 <button type="submit">登录</button>
             </form>
-            <div>
-                {user ? <div>登录成功！用户名为：{user?.name}</div> : null}
-            </div>
         </div>
     );
 };
