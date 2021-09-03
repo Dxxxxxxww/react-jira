@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { SearchPanel } from './search-panel';
 import { List } from './list';
 import { cleanObject, useDebounce, useMount } from '../../utils';
-import { http } from 'utils/http';
+import { http, useHttp } from 'utils/http';
 
 export const ProjectListScreen = () => {
     // select options 用户下拉框数据
@@ -16,24 +16,26 @@ export const ProjectListScreen = () => {
     // table 展示的请求结果
     const [list, setList] = useState([]);
     const debouncedValue = useDebounce(param, 200);
-
+    const client = useHttp();
+    // useEffect 的回调参数不能加上 async
     useEffect(() => {
-        http(`/projects`, { data: cleanObject(debouncedValue) }).then(
-            async (response) => {
-                if (response.ok) {
-                    setList(await response.json());
-                }
-            }
-        );
+        client(`projects`, { data: cleanObject(debouncedValue) })
+            .then(({ result }) => {
+                setList(result.projectList);
+            })
+            .catch(({ message }) => {
+                console.log(message);
+            });
     }, [debouncedValue]);
-
-    useMount(() => {
-        http(`/users`).then(async (response) => {
-            if (response.ok) {
-                const { result } = await response.json();
+    // useMount 的回调参数可以加上 async
+    useMount(async () => {
+        client(`users`)
+            .then(({ result }) => {
                 setUsers(result.userOptions);
-            }
-        });
+            })
+            .catch(({ message }) => {
+                console.log(message);
+            });
     });
 
     return (

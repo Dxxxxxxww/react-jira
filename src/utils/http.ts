@@ -1,4 +1,3 @@
-import { getToken } from 'auth-provider';
 import qs from 'qs';
 import * as auth from 'auth-provider';
 import { useAuth } from 'context/auth-context';
@@ -19,9 +18,9 @@ const apiUrl = process.env.REACT_APP_BASE_URL;
 export const http = (
     endpoint: string,
     // 当一个参数有默认值时，自动变为可选
-    { contentType, data, ...customConfig }: Config = {}
+    { contentType, token, data, ...customConfig }: Config = {}
 ) => {
-    const token = getToken();
+    token = token ?? auth.getToken();
     const config: Config = {
         headers: {
             Authorization: token ? ` Bearer ${token}` : '',
@@ -37,7 +36,7 @@ export const http = (
         config.body = JSON.stringify(data ?? {});
     }
     // axios 和 fetch 的区别，axios可以直接在返回状态不为2xx的时候抛出异常
-    return fetch(`${apiUrl}${endpoint}`, config).then(async (res) => {
+    return fetch(`${apiUrl}/${endpoint}`, config).then(async (res) => {
         if (res.status === 401) {
             await auth.logout();
             window.location.reload();
@@ -51,7 +50,9 @@ export const http = (
     });
 };
 
-export const useHttp = ([endpoint, config]: Parameters<typeof http>) => {
+// 使用 useHttp 封装从 user 中拿取 token 是因为相对于从内存中拿数据来说，localstorage 中拿数据太慢了
+export const useHttp = () => {
     const { user } = useAuth();
-    return http(endpoint, { token: user?.token, ...config });
+    return (...[endpoint, config]: Parameters<typeof http>) =>
+        http(endpoint, { token: user?.token, ...config });
 };
