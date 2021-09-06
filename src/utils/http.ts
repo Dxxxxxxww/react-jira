@@ -53,6 +53,7 @@ export const http = (
 // 使用 useHttp 封装从 user 中拿取 token 是因为相对于从内存中拿数据来说，localstorage 中拿数据太慢了
 export const useHttp = () => {
     const { user } = useAuth();
+    // utility type 用法： 使用泛型传入一个类型，utility type 会对这个类型进行某种操作
     return (...[endpoint, config]: Parameters<typeof http>) =>
         http(endpoint, { token: user?.token, ...config });
 };
