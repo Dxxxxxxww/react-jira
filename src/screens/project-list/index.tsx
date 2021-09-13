@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { SearchPanel } from './search-panel';
 import { List } from './list';
 import { cleanObject, useDebounce, useMount } from '../../utils';
-import { http, useHttp } from 'utils/http';
+import { useHttp } from 'utils/http';
 
 export const ProjectListScreen = () => {
     // select options 用户下拉框数据
@@ -26,7 +26,7 @@ export const ProjectListScreen = () => {
             .catch(({ message }) => {
                 console.log(message);
             });
-    }, [debouncedValue]);
+    }, [client, debouncedValue]);
     // useMount 的回调参数可以加上 async
     useMount(async () => {
         client(`users`)
