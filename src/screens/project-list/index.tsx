@@ -4,11 +4,11 @@ import { List } from './list';
 import { cleanObject, useDebounce, useMount } from '../../utils';
 import { useHttp } from 'utils/http';
 import styled from '@emotion/styled';
+import { Typography } from 'antd';
 
 export const ProjectListScreen = () => {
     // select options 用户下拉框数据
     const [users, setUsers] = useState([]);
-
     // input 输入参数
     const [param, setParam] = useState({
         name: '',
@@ -16,17 +16,23 @@ export const ProjectListScreen = () => {
     });
     // table 展示的请求结果
     const [list, setList] = useState([]);
+    // loading status
+    const [isLoading, setIsLoading] = useState(false);
+    // error message
+    const [error, setError] = useState<null | Error>(null);
     const debouncedValue = useDebounce(param, 200);
     const client = useHttp();
     // useEffect 的回调参数不能加上 async
     useEffect(() => {
+        setIsLoading(true);
         client(`projects`, { data: cleanObject(debouncedValue) })
             .then(({ result }) => {
                 setList(result.projectList);
             })
             .catch(({ message }) => {
                 console.log(message);
-            });
+            })
+            .finally(() => setIsLoading(false));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debouncedValue]);
     // useMount 的回调参数可以加上 async
@@ -43,7 +49,10 @@ export const ProjectListScreen = () => {
     return (
         <Container>
             <SearchPanel users={users} param={param} setParam={setParam} />
-            <List users={users} list={list} />
+            {error ? (
+                <Typography.Text type="danger">{error.message}</Typography.Text>
+            ) : null}
+            <List users={users} dataSource={list} />
         </Container>
     );
 };

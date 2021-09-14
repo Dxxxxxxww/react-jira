@@ -1,4 +1,4 @@
-import { Table } from 'antd';
+import { Table, TableProps } from 'antd';
 import { User } from './search-panel';
 
 interface Project {
@@ -9,12 +9,11 @@ interface Project {
     organization: string;
 }
 
-interface ListProp {
-    list: Project[];
+interface ListProp extends TableProps<Project> {
     users: User[];
 }
 
-export const List = ({ users, list }: ListProp) => {
+export const List = ({ users, ...props }: ListProp) => {
     return (
         <Table
             pagination={false}
@@ -40,7 +39,7 @@ export const List = ({ users, list }: ListProp) => {
                     }
                 }
             ]}
-            dataSource={list}
+            {...props}
         />
     );
 };
