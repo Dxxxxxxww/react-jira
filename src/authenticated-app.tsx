@@ -2,27 +2,38 @@ import { ProjectListScreen } from './screens/project-list';
 import { useAuth } from './context/auth-context';
 import styled from '@emotion/styled';
 import { Row } from './components/row';
+import { ReactComponent as SoftwareLog } from './assets/img/software-logo.svg';
+import { Button, Dropdown, Menu } from 'antd';
 
 export const AuthenticatedApp = () => {
-    const { logout } = useAuth();
+    const { logout, user } = useAuth();
     return (
         <Container>
             <Header>
                 <HeaderLeft gap={true}>
-                    <h3>logo</h3>
+                    <SoftwareLog width="18rem" color="#2684ff" />
                     <h3>项目</h3>
                     <h3>列表</h3>
                 </HeaderLeft>
                 <HeaderRight>
-                    <button onClick={logout}>登出</button>
+                    <Dropdown
+                        overlay={
+                            <Menu>
+                                <Menu.Item key="logout">
+                                    <Button type="link" onClick={logout}>
+                                        登出
+                                    </Button>
+                                </Menu.Item>
+                            </Menu>
+                        }
+                    >
+                        <Button type="link">HI, {user?.name}</Button>
+                    </Dropdown>
                 </HeaderRight>
             </Header>
-            <Nav />
             <Main>
                 <ProjectListScreen />
             </Main>
-            <Aside />
-            <Footer />
         </Container>
     );
 };
@@ -38,12 +49,11 @@ export const AuthenticatedApp = () => {
 
 const Container = styled.div`
     display: grid;
-    grid-template-rows: 6rem 1fr 6rem;
-    grid-template-columns: 20rem 1fr 20rem;
+    grid-template-rows: 6rem 1fr;
+    grid-template-columns: 1fr;
     grid-template-areas:
-        'header header header'
-        'nav main aside'
-        'footer footer footer';
+        'header'
+        'main';
     height: 100vh; ;
 `;
 
@@ -56,12 +66,12 @@ const HeaderRight = styled.div``;
 const Main = styled.main`
     grid-area: main;
 `;
-const Nav = styled.main`
-    grid-area: nav;
-`;
-const Aside = styled.main`
-    grid-area: aside;
-`;
-const Footer = styled.main`
-    grid-area: footer;
-`;
+// const Nav = styled.main`
+//     grid-area: nav;
+// `;
+// const Aside = styled.main`
+//     grid-area: aside;
+// `;
+// const Footer = styled.main`
+//     grid-area: footer;
+// `;

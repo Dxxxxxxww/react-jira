@@ -3,6 +3,7 @@ import { SearchPanel } from './search-panel';
 import { List } from './list';
 import { cleanObject, useDebounce, useMount } from '../../utils';
 import { useHttp } from 'utils/http';
+import styled from '@emotion/styled';
 
 export const ProjectListScreen = () => {
     // select options 用户下拉框数据
@@ -26,7 +27,8 @@ export const ProjectListScreen = () => {
             .catch(({ message }) => {
                 console.log(message);
             });
-    }, [client, debouncedValue]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [debouncedValue]);
     // useMount 的回调参数可以加上 async
     useMount(async () => {
         client(`users`)
@@ -39,9 +41,13 @@ export const ProjectListScreen = () => {
     });
 
     return (
-        <div>
+        <Container>
             <SearchPanel users={users} param={param} setParam={setParam} />
             <List users={users} list={list} />
-        </div>
+        </Container>
     );
 };
+
+const Container = styled.div`
+    padding: 3.2rem;
+`;
