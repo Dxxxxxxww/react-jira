@@ -27,7 +27,7 @@ export const AuthenticatedApp = () => {
                             </Menu>
                         }
                     >
-                        <Button type="link">HI, {user?.name}</Button>
+                        <Button type="link">HI, {user?.username}</Button>
                     </Dropdown>
                 </HeaderRight>
             </Header>
