@@ -1,7 +1,7 @@
 import { Table, TableProps } from 'antd';
 import { User } from './search-panel';
 
-interface Project {
+export interface Project {
     id: number;
     name: string;
     personId: number;

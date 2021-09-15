@@ -9,7 +9,7 @@ interface SearchPanelProps {
     users: User[];
     param: {
         name: string;
-        personId: string;
+        personId: number;
     };
     setParam: (param: SearchPanelProps['param']) => void;
 }
@@ -32,16 +32,16 @@ export const SearchPanel = ({ users, param, setParam }: SearchPanelProps) => (
         </Form.Item>
         <Form.Item>
             <Select
-                defaultValue=""
+                defaultValue={0}
                 value={param.personId}
-                onChange={(value: string) =>
+                onChange={(value) =>
                     setParam({
                         ...param,
                         personId: value
                     })
                 }
             >
-                <Option value={''}>负责人</Option>
+                <Option value={0}>负责人</Option>
                 {users.map((user) => (
                     <Option key={user.id} value={user.id}>
                         {user.name}

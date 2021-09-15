@@ -8,6 +8,11 @@ interface Config extends RequestInit {
     contentType?: string;
 }
 const apiUrl = process.env.REACT_APP_BASE_URL;
+enum API_STATUS {
+    OK = 1,
+    ERROR,
+    NOT_ALLOW
+}
 
 /**
  * @description 底层 fetch 包装
@@ -42,11 +47,15 @@ export const http = (
             window.location.reload();
             return Promise.reject({ message: '请重新登录' });
         }
-        const data = await res.json();
-        if (res.ok) {
-            return data;
+        const { code, result, message } = await res.json();
+        if (res.ok && code === API_STATUS.OK) {
+            return result;
         }
-        return Promise.reject(data);
+        return Promise.reject({
+            code,
+            result,
+            message: message ?? '服务端异常，请与管理员确认'
+        });
     });
 };
 

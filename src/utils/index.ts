@@ -9,7 +9,7 @@ export const isVoid = (value: unknown) =>
  * @param object 需要清理的对象
  * @returns 清理完成的对象
  */
-export const cleanObject = (object: { [key: string]: string }) => {
+export const cleanObject = (object: { [key: string]: unknown }) => {
     const result = { ...object };
     Object.keys(result).forEach((key) => {
         const value = result[key];
