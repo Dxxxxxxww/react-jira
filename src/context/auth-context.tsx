@@ -3,6 +3,11 @@ import * as auth from 'auth-provider';
 import { User } from '../screens/project-list/search-panel';
 import { http } from 'utils/http';
 import { useMount } from 'utils';
+import { useAsync } from '../utils/use-async';
+import {
+    FullPageError,
+    FullPageLoading
+} from '../components/full-page/full-page-loading';
 
 interface AuthForm {
     username: string;
@@ -30,17 +35,32 @@ const AuthContext = React.createContext<
 AuthContext.displayName = 'AuthContext';
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-    const [user, setUser] = useState<User | null>(null);
+    const {
+        data: user,
+        error,
+        isLoading,
+        isIdle,
+        isError,
+        run,
+        setData: setUser
+    } = useAsync<User | null>();
+
     const login = (form: AuthForm) => auth.login(form).then(setUser);
     const register = (form: AuthForm) => auth.register(form).then(setUser);
     const logout = () => auth.logout().then(() => setUser(null));
 
     useMount(async () => {
-        // async 标记的函数返回值都会变成 promise，所以这里需要 then 来接受
-        bootstrapUser().then(setUser);
-        // 又或者这里也是用 async await 包裹一层
-        // setUser(await bootstrapUser());
+        // async 标记的函数返回值都会变成 promise
+        run(bootstrapUser());
     });
+
+    if (isIdle || isLoading) {
+        return <FullPageLoading />;
+    }
+
+    if (isError) {
+        return <FullPageError error={error} />;
+    }
 
     return (
         <AuthContext.Provider

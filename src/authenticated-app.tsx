@@ -1,7 +1,7 @@
 import { ProjectListScreen } from './screens/project-list';
 import { useAuth } from './context/auth-context';
 import styled from '@emotion/styled';
-import { Row } from './components/row';
+import { Row } from './components/row/row';
 import { ReactComponent as SoftwareLog } from './assets/img/software-logo.svg';
 import { Button, Dropdown, Menu } from 'antd';
 
