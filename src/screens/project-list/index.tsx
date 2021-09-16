@@ -18,7 +18,6 @@ export const ProjectListScreen = () => {
     // table 展示的请求结果
     const client = useHttp();
     const { isLoading, error, data } = useProjectList(param);
-    console.log(error);
     // useMount 的回调参数可以加上 async
     useMount(async () => {
         client(`users`)
