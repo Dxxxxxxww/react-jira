@@ -1,7 +1,7 @@
 import { Login } from './login';
 import { Register } from './register';
 import { useState } from 'react';
-import { Button, Card, Divider } from 'antd';
+import { Button, Card, Divider, Typography } from 'antd';
 import styled from '@emotion/styled';
 import logo from 'assets/img/logo.svg';
 import left from 'assets/img/left.svg';
@@ -9,15 +9,32 @@ import right from 'assets/img/right.svg';
 
 export const UnauthenticatedApp = () => {
     const [isRegister, setIsRegister] = useState(false);
+    const [error, setError] = useState<Error | null>(null);
+
+    const toggle = () => {
+        setError(null);
+        setIsRegister(!isRegister);
+    };
+
     return (
         <Container>
             <Header />
             <Background />
             <ShadowCard>
-                {isRegister ? <Register /> : <Login />}
+                <Title>{isRegister ? '请注册' : '请登录'}</Title>
+                {error ? (
+                    <Typography.Text type="danger">
+                        {error.message}
+                    </Typography.Text>
+                ) : null}
+                {isRegister ? (
+                    <Register onError={setError} />
+                ) : (
+                    <Login onError={setError} />
+                )}
                 <Divider />
-                <Button type="link" onClick={() => setIsRegister(!isRegister)}>
-                    切换{isRegister ? '已有账号？请登录' : '没有账号？快来注册'}
+                <Button type="link" onClick={() => toggle()}>
+                    {isRegister ? '已有账号？请登录' : '没有账号？快来注册'}
                 </Button>
             </ShadowCard>
         </Container>
@@ -42,6 +59,11 @@ const Header = styled.header`
     padding: 5rem 0;
     background-size: 8rem;
     width: 100%;
+`;
+
+const Title = styled.h2`
+    margin-bottom: 2.4rem;
+    color: rgb(94, 108, 132);
 `;
 
 const ShadowCard = styled(Card)`

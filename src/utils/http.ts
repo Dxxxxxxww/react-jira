@@ -1,6 +1,7 @@
 import qs from 'qs';
 import * as auth from 'auth-provider';
 import { useAuth } from 'context/auth-context';
+import { API_STATUS } from '../assets/constant';
 
 interface Config extends RequestInit {
     token?: string;
@@ -8,11 +9,6 @@ interface Config extends RequestInit {
     contentType?: string;
 }
 const apiUrl = process.env.REACT_APP_BASE_URL;
-enum API_STATUS {
-    OK = 1,
-    ERROR,
-    NOT_ALLOW
-}
 
 /**
  * @description 底层 fetch 包装
