@@ -1,6 +1,7 @@
 import { Form, Input, Select } from 'antd';
 export interface User {
     name: string;
+    username?: string;
     id: number;
     token: string;
 }
