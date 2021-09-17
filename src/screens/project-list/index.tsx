@@ -6,6 +6,8 @@ import { useHttp } from 'utils/http';
 import styled from '@emotion/styled';
 import { Typography } from 'antd';
 import { useProjectList } from '../../api/project-list/project-list';
+import { Route, Routes } from 'react-router';
+import { EpicScreen } from '../epic/epic';
 
 export const ProjectListScreen = () => {
     // select options 用户下拉框数据
@@ -42,6 +44,9 @@ export const ProjectListScreen = () => {
                 dataSource={data?.projectList ?? []}
                 loading={isLoading}
             />
+            <Routes>
+                <Route path={'/epic'} element={<EpicScreen />} />
+            </Routes>
         </Container>
     );
 };
