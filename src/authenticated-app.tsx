@@ -16,14 +16,14 @@ export const AuthenticatedApp = () => {
                 <Router>
                     <Routes>
                         <Route
-                            path="/projectlist"
+                            path="/projectList"
                             element={<ProjectListScreen />}
                         />
                         <Route
-                            path="/projectList/id/*"
+                            path="/projectList/:projectId/*"
                             element={<ProjectScreen />}
                         />
-                        <Navigate to="/projectlist" />
+                        <Navigate to="/projectList" />
                     </Routes>
                 </Router>
             </Main>
