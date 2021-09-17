@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export const isFalsy = (param: unknown) => (param === 0 ? false : !param);
 export const isVoid = (value: unknown) =>
@@ -62,4 +62,22 @@ export const useArray = <V>(arr: Array<V>) => {
         removeIndex,
         add
     };
+};
+
+export const useDocumentTitle = (
+    title: string,
+    keepOnUnmount: boolean = false
+) => {
+    // 使用 useRef 而非闭包来保存在整个 hook 生命周期中不会改变的值，解决 react 的警告
+    const oldTitle = useRef(document.title).current;
+    // const oldTitle = document.title;
+
+    useEffect(() => {
+        document.title = title;
+        return () => {
+            if (!keepOnUnmount) {
+                document.title = oldTitle;
+            }
+        };
+    }, [title, keepOnUnmount, oldTitle]);
 };

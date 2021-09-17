@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { SearchPanel } from './search-panel';
 import { List } from './list';
-import { useMount } from '../../utils';
+import { useDocumentTitle, useMount } from '../../utils';
 import { useHttp } from 'utils/http';
 import styled from '@emotion/styled';
 import { Typography } from 'antd';
@@ -29,6 +29,8 @@ export const ProjectListScreen = () => {
                 console.log(message);
             });
     });
+
+    useDocumentTitle('项目列表');
 
     return (
         <Container>
