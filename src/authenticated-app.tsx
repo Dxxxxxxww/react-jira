@@ -4,37 +4,59 @@ import styled from '@emotion/styled';
 import { Row } from './components/row/row';
 import { ReactComponent as SoftwareLog } from './assets/img/software-logo.svg';
 import { Button, Dropdown, Menu } from 'antd';
+import { Navigate, Routes, Route } from 'react-router';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { ProjectScreen } from './screens/project';
 
 export const AuthenticatedApp = () => {
-    const { logout, user } = useAuth();
     return (
         <Container>
-            <Header>
-                <HeaderLeft gap={true}>
-                    <SoftwareLog width="18rem" color="#2684ff" />
-                    <h3>项目</h3>
-                    <h3>列表</h3>
-                </HeaderLeft>
-                <HeaderRight>
-                    <Dropdown
-                        overlay={
-                            <Menu>
-                                <Menu.Item key="logout">
-                                    <Button type="link" onClick={logout}>
-                                        登出
-                                    </Button>
-                                </Menu.Item>
-                            </Menu>
-                        }
-                    >
-                        <Button type="link">HI, {user?.username}</Button>
-                    </Dropdown>
-                </HeaderRight>
-            </Header>
+            <PageHeader />
             <Main>
-                <ProjectListScreen />
+                <Router>
+                    <Routes>
+                        <Route
+                            path="/projectlist"
+                            element={<ProjectListScreen />}
+                        />
+                        <Route
+                            path="/projectList/id/*"
+                            element={<ProjectScreen />}
+                        />
+                        <Navigate to="/projectlist" />
+                    </Routes>
+                </Router>
             </Main>
         </Container>
+    );
+};
+
+const PageHeader = () => {
+    const { logout, user } = useAuth();
+
+    return (
+        <Header>
+            <HeaderLeft gap={true}>
+                <SoftwareLog width="18rem" color="#2684ff" />
+                <h3>项目</h3>
+                <h3>列表</h3>
+            </HeaderLeft>
+            <HeaderRight>
+                <Dropdown
+                    overlay={
+                        <Menu>
+                            <Menu.Item key="logout">
+                                <Button type="link" onClick={logout}>
+                                    登出
+                                </Button>
+                            </Menu.Item>
+                        </Menu>
+                    }
+                >
+                    <Button type="link">HI, {user?.username}</Button>
+                </Dropdown>
+            </HeaderRight>
+        </Header>
     );
 };
 

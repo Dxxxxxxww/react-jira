@@ -1,4 +1,4 @@
-import React, { ReactNode, useContext, useState } from 'react';
+import React, { ReactNode, useContext } from 'react';
 import * as auth from 'auth-provider';
 import { User } from '../screens/project-list/search-panel';
 import { http } from 'utils/http';
