@@ -7,7 +7,7 @@ import { useAsync } from '../utils/use-async';
 import {
     FullPageError,
     FullPageLoading
-} from '../components/full-page/full-page-loading';
+} from '../components/full-page/full-page';
 
 interface AuthForm {
     username: string;
