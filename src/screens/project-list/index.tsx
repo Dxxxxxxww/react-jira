@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { SearchPanel } from './search-panel';
 import { List } from './list';
-import { useDocumentTitle, useMount } from '../../utils';
+import { useDocumentTitle, useMount, useUrlQueryParam } from '../../utils';
 import { useHttp } from 'utils/http';
 import styled from '@emotion/styled';
 import { Typography } from 'antd';
@@ -11,10 +11,11 @@ export const ProjectListScreen = () => {
     // select options 用户下拉框数据
     const [users, setUsers] = useState([]);
     // input 输入参数
-    const [param, setParam] = useState({
+    const [, setParam] = useState({
         name: '',
         personId: 0
     });
+    const [param] = useUrlQueryParam(['name', 'personId']);
     // table 展示的请求结果
     const client = useHttp();
     const { isLoading, error, data } = useProjectList(param);

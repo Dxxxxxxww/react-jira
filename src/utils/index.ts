@@ -89,9 +89,12 @@ export const useDocumentTitle = (
 export const resetRoute = () => (window.location.href = window.location.origin);
 
 export const useUrlQueryParam = (keys: string[]) => {
-    const [searchParams] = useSearchParams();
-    keys.reduce((initValue, key) => {
-        initValue[key] = searchParams.get(key) ?? '';
-        return initValue;
-    }, {} as { [key: string]: string });
+    const [searchParams, setSearchParams] = useSearchParams();
+    return [
+        keys.reduce((initValue, key) => {
+            initValue[key] = searchParams.get(key) ?? '';
+            return initValue;
+        }, {} as { [key: string]: string }),
+        setSearchParams
+    ] as const;
 };
