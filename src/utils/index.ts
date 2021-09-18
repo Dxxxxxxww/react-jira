@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 export const isFalsy = (param: unknown) => (param === 0 ? false : !param);
 export const isVoid = (value: unknown) =>
@@ -74,10 +75,23 @@ export const useDocumentTitle = (
 
     useEffect(() => {
         document.title = title;
+    }, [title]);
+
+    useEffect(() => {
         return () => {
             if (!keepOnUnmount) {
                 document.title = oldTitle;
             }
         };
-    }, [title, keepOnUnmount, oldTitle]);
+    }, [keepOnUnmount, oldTitle]);
+};
+
+export const resetRoute = () => (window.location.href = window.location.origin);
+
+export const useUrlQueryParam = (keys: string[]) => {
+    const [searchParams] = useSearchParams();
+    keys.reduce((initValue, key) => {
+        initValue[key] = searchParams.get(key) ?? '';
+        return initValue;
+    }, {} as { [key: string]: string });
 };

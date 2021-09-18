@@ -29,11 +29,7 @@ export const List = ({ users, ...props }: ListProp) => {
                         return a.name.localeCompare(b.name);
                     },
                     render(value, project) {
-                        return (
-                            <Link to={`projectList/${project.id}`}>
-                                {project.name}
-                            </Link>
-                        );
+                        return <Link to={`${project.id}`}>{project.name}</Link>;
                     }
                 },
                 {

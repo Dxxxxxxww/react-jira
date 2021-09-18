@@ -4,9 +4,15 @@ import styled from '@emotion/styled';
 import { Row } from './components/row/row';
 import { ReactComponent as SoftwareLog } from './assets/img/software-logo.svg';
 import { Button, Dropdown, Menu } from 'antd';
-import { Navigate, Routes, Route } from 'react-router';
-import { BrowserRouter as Router } from 'react-router-dom';
+// import {Navigate, Routes, Route} from 'react-router'
+import {
+    BrowserRouter as Router,
+    Navigate,
+    Routes,
+    Route
+} from 'react-router-dom';
 import { ProjectScreen } from './screens/project';
+import { resetRoute } from './utils';
 
 export const AuthenticatedApp = () => {
     return (
@@ -37,7 +43,9 @@ const PageHeader = () => {
     return (
         <Header>
             <HeaderLeft gap={true}>
-                <SoftwareLog width="18rem" color="#2684ff" />
+                <Button type="link" onClick={resetRoute}>
+                    <SoftwareLog width="18rem" color="#2684ff" />
+                </Button>
                 <h3>项目</h3>
                 <h3>列表</h3>
             </HeaderLeft>
