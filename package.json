@@ -117,6 +117,7 @@
     "@commitlint/config-conventional": "^13.1.0",
     "@types/qs": "^6.9.7",
     "@types/react": "^17.0.16",
+    "@welldone-software/why-did-you-render": "^6.2.1",
     "eslint-config-prettier": "^8.3.0",
     "express": "^4.17.1",
     "husky": ">=6",

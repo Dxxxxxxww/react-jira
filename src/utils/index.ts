@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 export const isFalsy = (param: unknown) => (param === 0 ? false : !param);
@@ -69,10 +69,13 @@ export const useDocumentTitle = (
     title: string,
     keepOnUnmount: boolean = false
 ) => {
-    // 使用 useRef 而非闭包来保存在整个 hook 生命周期中不会改变的值，解决 react 的警告
+    // useRef 创建一个在整个 hook 生命周期中不会改变的值
+    // 使用 useRef 而非闭包来保存，是为了解决 react 对没有收集 oldTitle 作为依赖的警告
+    // 如果使用闭包变量并且还添加了依赖的话，那么 oldTitle 的值在每次渲染后都会变为新的 title，
+    // 就失去了保存原来旧 title 的目的
     const oldTitle = useRef(document.title).current;
     // const oldTitle = document.title;
-
+    // useEffect 中如果使用了外部的变量或者状态，而没有在第二个参数中加入依赖的话，就会产生闭包的问题
     useEffect(() => {
         document.title = title;
     }, [title]);
@@ -88,13 +91,23 @@ export const useDocumentTitle = (
 
 export const resetRoute = () => (window.location.href = window.location.origin);
 
-export const useUrlQueryParam = (keys: string[]) => {
+export const useUrlQueryParam = <K extends string>(keys: K[]) => {
     const [searchParams, setSearchParams] = useSearchParams();
+    // useMemo 会返回一个 被缓存的值，而 useEffect 返回的是 销毁钩子
+    // 这里如果不使用 useMemo 的话，每次组件重新渲染，这里就会返回一个新生成的对象，
+    // 由于新老对象的地址不同（===），就会被认为是不同的对象，继而又触发渲染，
+    // 陷入无限渲染
+    // 使用 useMemo 的返回值，相当于是只在初次渲染时建立了一个缓存的公共常量对象
+    // 以后每次的修改都会取这个对象
     return [
-        keys.reduce((initValue, key) => {
-            initValue[key] = searchParams.get(key) ?? '';
-            return initValue;
-        }, {} as { [key: string]: string }),
+        useMemo(
+            () =>
+                keys.reduce((initValue, key) => {
+                    initValue[key] = searchParams.get(key) ?? '';
+                    return initValue;
+                }, {} as { [key in K]: any }),
+            [searchParams, keys]
+        ),
         setSearchParams
     ] as const;
 };
