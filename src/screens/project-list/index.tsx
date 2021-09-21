@@ -11,13 +11,8 @@ export const ProjectListScreen = () => {
     useDocumentTitle('项目列表');
     // select options 用户下拉框数据
     const [users, setUsers] = useState([]);
-    // input 输入参数
-    const [, setParam] = useState({
-        name: '',
-        personId: 0
-    });
     const [searchParam] = useState<['name', 'personId']>(['name', 'personId']);
-    const [param] = useUrlQueryParam(searchParam);
+    const [param, setParam] = useUrlQueryParam(searchParam);
     // table 展示的请求结果
     const client = useHttp();
     const { isLoading, error, data } = useProjectList(param);
@@ -47,7 +42,7 @@ export const ProjectListScreen = () => {
     );
 };
 
-ProjectListScreen.whyDidYouRender = true;
+ProjectListScreen.whyDidYouRender = false;
 
 const Container = styled.div`
     padding: 3.2rem;

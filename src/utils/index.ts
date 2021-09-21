@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { URLSearchParamsInit, useSearchParams } from 'react-router-dom';
 
 export const isFalsy = (param: unknown) => (param === 0 ? false : !param);
 export const isVoid = (value: unknown) =>
@@ -99,6 +99,8 @@ export const useUrlQueryParam = <K extends string>(keys: K[]) => {
     // 陷入无限渲染
     // 使用 useMemo 的返回值，相当于是只在初次渲染时建立了一个缓存的公共常量对象
     // 以后每次的修改都会取这个对象
+    // 基本数据类型，组件状态可以放入依赖中
+    // 非基本数据类型非组件状态不可放入依赖中
     return [
         useMemo(
             () =>
@@ -108,6 +110,13 @@ export const useUrlQueryParam = <K extends string>(keys: K[]) => {
                 }, {} as { [key in K]: any }),
             [searchParams, keys]
         ),
-        setSearchParams
+        (params: Partial<{ [key in K]: unknown }>) => {
+            // Object.fromEntries 把键值对列表转换为一个对象。
+            const o = {
+                ...Object.fromEntries(searchParams),
+                ...params
+            } as URLSearchParamsInit;
+            return setSearchParams(o);
+        }
     ] as const;
 };
