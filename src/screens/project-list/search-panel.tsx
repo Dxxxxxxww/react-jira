@@ -1,4 +1,6 @@
-import { Form, Input, Select } from 'antd';
+import { Form, Input } from 'antd';
+import { Project } from './list';
+import { UserSelect } from '../../components/user-select/user-select';
 export interface User {
     name: string;
     username?: string;
@@ -8,14 +10,9 @@ export interface User {
 
 interface SearchPanelProps {
     users: User[];
-    param: {
-        name: string;
-        personId: number;
-    };
+    param: Partial<Pick<Project, 'name' | 'personId'>>;
     setParam: (param: SearchPanelProps['param']) => void;
 }
-
-const { Option } = Select;
 
 export const SearchPanel = ({ users, param, setParam }: SearchPanelProps) => (
     <Form style={{ marginBottom: '2rem' }} layout="inline">
@@ -32,8 +29,10 @@ export const SearchPanel = ({ users, param, setParam }: SearchPanelProps) => (
             />
         </Form.Item>
         <Form.Item>
-            <Select
+            <UserSelect
                 defaultValue={0}
+                defaultOptionName={'负责人'}
+                options={users}
                 value={param.personId}
                 onChange={(value) =>
                     setParam({
@@ -41,14 +40,9 @@ export const SearchPanel = ({ users, param, setParam }: SearchPanelProps) => (
                         personId: value
                     })
                 }
-            >
-                <Option value={0}>负责人</Option>
-                {users.map((user) => (
-                    <Option key={user.id} value={user.id}>
-                        {user.name}
-                    </Option>
-                ))}
-            </Select>
+            />
         </Form.Item>
     </Form>
 );
+
+SearchPanel.whyDidYouRender = false;

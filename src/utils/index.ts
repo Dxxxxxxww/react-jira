@@ -101,21 +101,22 @@ export const useUrlQueryParam = <K extends string>(keys: K[]) => {
     // 以后每次的修改都会取这个对象
     // 基本数据类型，组件状态可以放入依赖中
     // 非基本数据类型非组件状态不可放入依赖中
+    const [stateKeys] = useState(keys);
     return [
         useMemo(
             () =>
-                keys.reduce((initValue, key) => {
+                stateKeys.reduce((initValue, key) => {
                     initValue[key] = searchParams.get(key) ?? '';
                     return initValue;
                 }, {} as { [key in K]: any }),
-            [searchParams, keys]
+            [searchParams, stateKeys]
         ),
         (params: Partial<{ [key in K]: unknown }>) => {
             // Object.fromEntries 把键值对列表转换为一个对象。
-            const o = {
+            const o = cleanObject({
                 ...Object.fromEntries(searchParams),
                 ...params
-            } as URLSearchParamsInit;
+            }) as URLSearchParamsInit;
             return setSearchParams(o);
         }
     ] as const;

@@ -38,8 +38,10 @@ export const IdSelect = ({
             {defaultOptionName ? (
                 <Select.Option value={0}>{defaultOptionName}</Select.Option>
             ) : null}
-            {options.map((item) => (
-                <Select.Option value={item.id}>{item.name}</Select.Option>
+            {options?.map((item) => (
+                <Select.Option key={item.id} value={item.id}>
+                    {item.name}
+                </Select.Option>
             ))}
         </Select>
     );
