@@ -2,26 +2,35 @@ import { Table, TableProps } from 'antd';
 import { User } from './search-panel';
 import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
-
-export interface Project {
-    id: number;
-    name: string;
-    personId: number;
-    pin: boolean;
-    organization: string;
-    created: number;
-}
+import { Pin } from '../../components/pin/pin';
+import { useEditProject } from '../../api/project-list/project-list';
+import { Project } from '../../types';
 
 interface ListProp extends TableProps<Project> {
     users: User[];
 }
 
 export const List = ({ users, ...props }: ListProp) => {
+    const { mutate } = useEditProject();
+    // project.id 这个参数是先知道的，而 pin 需要等到点击事件触发的时候才知道，
+    // 参数有先后，可以使用科里化来进行关注点分离
+    const onEdit = (id: number) => (pin: boolean) => mutate({ id, pin });
     return (
         <Table
             pagination={false}
             rowKey="id"
             columns={[
+                {
+                    title: <Pin checked={true} disabled={true} />,
+                    render(value, project) {
+                        return (
+                            <Pin
+                                checked={project.pin}
+                                onChange={onEdit(project.id)}
+                            />
+                        );
+                    }
+                },
                 {
                     title: '名称',
                     dataIndex: 'name',

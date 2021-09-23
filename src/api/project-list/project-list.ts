@@ -1,8 +1,8 @@
 import { useHttp } from '../../utils/http';
 import { useAsync } from '../../utils/use-async';
 import { cleanObject, useDebounce } from '../../utils';
-import { Project } from '../../screens/project-list/list';
 import { useEffect } from 'react';
+import { Project } from '../../types';
 
 interface ProjectListResult {
     projectList: Project[];
@@ -19,4 +19,24 @@ export const useProjectList = (params?: Partial<Project>) => {
     }, [debouncedParam]);
 
     return result;
+};
+
+export const useEditProject = () => {
+    const client = useHttp();
+    const { run, ...asyncResult } = useAsync();
+    const mutate = (params: Partial<Project>) => {
+        run(client('projects/edit', { data: params, method: 'PATCH' }));
+    };
+
+    return { mutate, asyncResult };
+};
+
+export const useAddProject = () => {
+    const client = useHttp();
+    const { run, ...asyncResult } = useAsync();
+    const mutate = (params: Partial<Project>) => {
+        run(client('projects/add', { data: params, method: 'POST' }));
+    };
+
+    return { mutate, asyncResult };
 };
