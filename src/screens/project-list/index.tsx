@@ -9,12 +9,17 @@ import { useUsers } from '../../api/users/users';
 export const ProjectListScreen = () => {
     useDocumentTitle('项目列表');
     const [param, setParam] = useUrlQueryParam(['name', 'personId']);
-    const { isLoading, error, data } = useProjectList(param);
+    const { isLoading, error, data, retry } = useProjectList(param);
     const { users } = useUsers();
 
     return (
         <Container>
-            <SearchPanel users={users} param={param} setParam={setParam} />
+            <SearchPanel
+                users={users}
+                param={param}
+                setParam={setParam}
+                reload={retry}
+            />
             {error ? (
                 <Typography.Text type="danger">{error.message}</Typography.Text>
             ) : null}

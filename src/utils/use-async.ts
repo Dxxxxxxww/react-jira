@@ -20,14 +20,16 @@ export const useAsync = <D>(
     initState?: State<D>,
     initConfig?: typeof defaultConfig
 ) => {
-    const [state, setState] = useState({
-        ...defaultInitState,
-        ...initState
-    });
     const config = {
         ...defaultConfig,
         ...initConfig
     };
+    const [state, setState] = useState({
+        ...defaultInitState,
+        ...initState
+    });
+    // 初始值必须为一个返回函数的函数
+    const [retry, setRetry] = useState(() => () => {});
 
     const setData = (data: D) => {
         setState({
@@ -45,11 +47,19 @@ export const useAsync = <D>(
         });
     };
 
-    const run = (promise: Promise<D>) => {
+    const run = (
+        promise: Promise<D>,
+        runConfig?: { retry?: () => Promise<D> }
+    ) => {
         if (!promise || !promise.then) {
             throw new Error('请传入 promise');
         }
         setState({ ...state, status: 'loading' });
+        setRetry(() => () => {
+            if (runConfig?.retry) {
+                run(runConfig?.retry(), runConfig);
+            }
+        });
         return promise
             .then((result) => {
                 setData(result);
@@ -72,6 +82,7 @@ export const useAsync = <D>(
         setData,
         setError,
         run,
+        retry,
         ...state
     };
 };

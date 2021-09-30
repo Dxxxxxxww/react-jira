@@ -14,7 +14,9 @@ export const useProjectList = (params?: Partial<Project>) => {
     const debouncedParam = useDebounce(params, 200);
     // useEffect 的回调参数不能加上 async
     useEffect(() => {
-        run(client(`projects`, { data: cleanObject(params ?? {}) }));
+        const fetch = () =>
+            client(`projects`, { data: cleanObject(params ?? {}) });
+        run(fetch(), { retry: fetch });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debouncedParam]);
 

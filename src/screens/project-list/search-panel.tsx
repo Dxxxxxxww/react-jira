@@ -1,5 +1,5 @@
-import { Form, Input } from 'antd';
-import { Project } from './list';
+import { Button, Form, Input } from 'antd';
+import { Project } from '../../types';
 import { UserSelect } from '../../components/user-select/user-select';
 export interface User {
     name: string;
@@ -12,9 +12,15 @@ interface SearchPanelProps {
     users: User[];
     param: Partial<Pick<Project, 'name' | 'personId'>>;
     setParam: (param: SearchPanelProps['param']) => void;
+    reload?: () => void;
 }
 
-export const SearchPanel = ({ users, param, setParam }: SearchPanelProps) => (
+export const SearchPanel = ({
+    users,
+    param,
+    setParam,
+    reload
+}: SearchPanelProps) => (
     <Form style={{ marginBottom: '2rem' }} layout="inline">
         <Form.Item>
             <Input
@@ -41,6 +47,9 @@ export const SearchPanel = ({ users, param, setParam }: SearchPanelProps) => (
                     })
                 }
             />
+        </Form.Item>
+        <Form.Item>
+            <Button onClick={reload}>刷新</Button>
         </Form.Item>
     </Form>
 );
