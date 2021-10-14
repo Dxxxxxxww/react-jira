@@ -1,5 +1,5 @@
 // 模拟第三方auth服务
-import { User } from './screens/project-list/search-panel';
+import { User } from './types';
 import { API_STATUS } from './assets/constant';
 
 const localStorageKey = '__auth_provider_token__';

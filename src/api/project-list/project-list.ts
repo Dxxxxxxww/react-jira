@@ -17,7 +17,6 @@ export const useProjectList = (params?: Partial<Project>) => {
         const fetch = () =>
             client(`projects`, { data: cleanObject(params ?? {}) });
         run(fetch(), { retry: fetch });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debouncedParam]);
 
     return result;

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { URLSearchParamsInit, useSearchParams } from 'react-router-dom';
 
 export const isFalsy = (param: unknown) => (param === 0 ? false : !param);
@@ -24,8 +24,21 @@ export const cleanObject = (object: { [key: string]: unknown }) => {
 export const useMount = (callback: () => void) => {
     useEffect(() => {
         callback();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [callback]);
+};
+
+// 挂载标记，如果组件挂载，则返回 true，如果组件销毁，返回 false
+export const useMountRef = () => {
+    const mountedRef = useRef(false);
+
+    useEffect(() => {
+        mountedRef.current = true;
+        return () => {
+            mountedRef.current = false;
+        };
     }, []);
+
+    return mountedRef;
 };
 
 export const useDebounce = <V>(value: V, delay?: number) => {
@@ -112,7 +125,7 @@ export const useUrlQueryParam = <K extends string>(keys: K[]) => {
             [searchParams, stateKeys]
         ),
         (params: Partial<{ [key in K]: unknown }>) => {
-            // Object.fromEntries 把键值对列表转换为一个对象。
+            // Object.fromEntries 把键值对列表转换为一个对象。Object.entries 的逆操作
             const o = cleanObject({
                 ...Object.fromEntries(searchParams),
                 ...params

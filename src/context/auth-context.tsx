@@ -1,6 +1,6 @@
-import React, { ReactNode, useContext } from 'react';
+import React, { ReactNode, useCallback, useContext } from 'react';
 import * as auth from 'auth-provider';
-import { User } from '../screens/project-list/search-panel';
+import { User } from '../types';
 import { http } from 'utils/http';
 import { useMount } from 'utils';
 import { useAsync } from '../utils/use-async';
@@ -49,10 +49,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const register = (form: AuthForm) => auth.register(form).then(setUser);
     const logout = () => auth.logout().then(() => setUser(null));
 
-    useMount(async () => {
-        // async 标记的函数返回值都会变成 promise
-        run(bootstrapUser());
-    });
+    useMount(
+        useCallback(async () => {
+            // async 标记的函数返回值都会变成 promise
+            await run(bootstrapUser());
+        }, [run])
+    );
 
     if (isIdle || isLoading) {
         return <FullPageLoading />;

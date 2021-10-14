@@ -2,6 +2,7 @@ import qs from 'qs';
 import * as auth from 'auth-provider';
 import { useAuth } from 'context/auth-context';
 import { API_STATUS } from '../assets/constant';
+import { useCallback } from 'react';
 
 interface Config extends RequestInit {
     token?: string;
@@ -59,6 +60,9 @@ export const http = (
 export const useHttp = () => {
     const { user } = useAuth();
     // utility type 用法： 使用泛型传入一个类型，utility type 会对这个类型进行某种操作
-    return (...[endpoint, config]: Parameters<typeof http>) =>
-        http(endpoint, { token: user?.token, ...config });
+    return useCallback(
+        (...[endpoint, config]: Parameters<typeof http>) =>
+            http(endpoint, { token: user?.token, ...config }),
+        [user?.token]
+    );
 };

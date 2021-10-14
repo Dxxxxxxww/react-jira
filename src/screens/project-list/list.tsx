@@ -1,5 +1,5 @@
 import { Table, TableProps } from 'antd';
-import { User } from './search-panel';
+import { User } from '../../types';
 import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
 import { Pin } from '../../components/pin/pin';
@@ -33,12 +33,16 @@ export const List = ({ users, ...props }: ListProp) => {
                 },
                 {
                     title: '名称',
-                    dataIndex: 'name',
+                    dataIndex: 'projectName',
                     sorter(a, b) {
-                        return a.name.localeCompare(b.name);
+                        return a.projectName.localeCompare(b.projectName);
                     },
                     render(value, project) {
-                        return <Link to={`${project.id}`}>{project.name}</Link>;
+                        return (
+                            <Link to={`${project.id}`}>
+                                {project.projectName}
+                            </Link>
+                        );
                     }
                 },
                 {
@@ -52,7 +56,7 @@ export const List = ({ users, ...props }: ListProp) => {
                             <span>
                                 {users.find(
                                     (user) => user.id === project.personId
-                                )?.name || '未知'}
+                                )?.username || '未知'}
                             </span>
                         );
                     }

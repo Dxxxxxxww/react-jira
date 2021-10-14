@@ -1,16 +1,10 @@
 import { Button, Form, Input } from 'antd';
-import { Project } from '../../types';
+import { Project, User } from '../../types';
 import { UserSelect } from '../../components/user-select/user-select';
-export interface User {
-    name: string;
-    username?: string;
-    id: number;
-    token: string;
-}
 
 interface SearchPanelProps {
     users: User[];
-    param: Partial<Pick<Project, 'name' | 'personId'>>;
+    param: Partial<Pick<Project, 'projectName' | 'personId'>>;
     setParam: (param: SearchPanelProps['param']) => void;
     reload?: () => void;
 }
@@ -25,11 +19,11 @@ export const SearchPanel = ({
         <Form.Item>
             <Input
                 type="text"
-                value={param.name}
+                value={param.projectName}
                 onChange={(evt) =>
                     setParam({
                         ...param,
-                        name: evt.target.value
+                        projectName: evt.target.value
                     })
                 }
             />
