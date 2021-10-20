@@ -1,21 +1,21 @@
-import { useCallback, useState } from 'react';
-import { useMountRef } from './index';
+import { useCallback, useState } from 'react'
+import { useMountRef } from './index'
 
 interface State<D> {
-    data: D | null;
-    error: Error | null;
-    status: 'idle' | 'loading' | 'error' | 'success';
+    data: D | null
+    error: Error | null
+    status: 'idle' | 'loading' | 'error' | 'success'
 }
 
 const defaultInitState: State<null> = {
     data: null,
     error: null,
     status: 'idle'
-};
+}
 
 const defaultConfig = {
     throwError: false
-};
+}
 
 export const useAsync = <D>(
     initState?: State<D>,
@@ -24,61 +24,61 @@ export const useAsync = <D>(
     const config = {
         ...defaultConfig,
         ...initConfig
-    };
+    }
     const [state, setState] = useState({
         ...defaultInitState,
         ...initState
-    });
+    })
     // 初始值必须为一个返回函数的函数
-    const [retry, setRetry] = useState(() => () => {});
+    const [retry, setRetry] = useState(() => () => {})
     // 设置一个挂载标识
-    const mountedRef = useMountRef();
+    const mountedRef = useMountRef()
 
     const setData = useCallback((data: D) => {
         setState({
             data,
             error: null,
             status: 'success'
-        });
-    }, []);
+        })
+    }, [])
 
-    const setError = (error: Error) => {
+    const setError = useCallback((error: Error) => {
         setState({
             data: null,
             error,
             status: 'error'
-        });
-    };
+        })
+    }, [])
 
     const run = useCallback(
         (promise: Promise<D>, runConfig?: { retry?: () => Promise<D> }) => {
             if (!promise || !promise.then) {
-                throw new Error('请传入 promise');
+                throw new Error('请传入 promise')
             }
-            setState((prevState) => ({ ...prevState, status: 'loading' }));
+            setState((prevState) => ({ ...prevState, status: 'loading' }))
             // 保存重新加载的请求函数
             setRetry(() => () => {
                 if (runConfig?.retry) {
-                    run(runConfig?.retry(), runConfig);
+                    run(runConfig?.retry(), runConfig)
                 }
-            });
+            })
             return promise
                 .then((result) => {
                     if (mountedRef.current) {
-                        setData(result);
+                        setData(result)
                     }
-                    return result;
+                    return result
                 })
                 .catch((error) => {
-                    setError(error);
+                    setError(error)
                     if (config.throwError) {
-                        return Promise.reject(error);
+                        return Promise.reject(error)
                     }
-                    return error;
-                });
+                    return error
+                })
         },
-        [config.throwError, mountedRef, setData]
-    );
+        [config.throwError, mountedRef, setData, setError]
+    )
 
     return {
         isIdle: state.status === 'idle',
@@ -90,5 +90,5 @@ export const useAsync = <D>(
         run,
         retry,
         ...state
-    };
-};
+    }
+}

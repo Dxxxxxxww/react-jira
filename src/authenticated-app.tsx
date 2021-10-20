@@ -1,29 +1,45 @@
-import { ProjectListScreen } from './screens/project-list';
-import { useAuth } from './context/auth-context';
-import styled from '@emotion/styled';
-import { Row } from './components/row/row';
-import { ReactComponent as SoftwareLog } from './assets/img/software-logo.svg';
-import { Button, Dropdown, Menu } from 'antd';
+import { ProjectListScreen } from './screens/project-list'
+import { useAuth } from './context/auth-context'
+import styled from '@emotion/styled'
+import { Row } from './components/row/row'
+import { ReactComponent as SoftwareLog } from './assets/img/software-logo.svg'
+import { Button, Dropdown, Menu } from 'antd'
 // import {Navigate, Routes, Route} from 'react-router'
 import {
     BrowserRouter as Router,
     Navigate,
     Routes,
     Route
-} from 'react-router-dom';
-import { ProjectScreen } from './screens/project';
-import { resetRoute } from './utils';
+} from 'react-router-dom'
+import { ProjectScreen } from './screens/project'
+import { resetRoute } from './utils'
+import { ProjectModal } from './screens/project-list/project-modal'
+import { useState } from 'react'
+import { ProjectPopover } from './components/project-popover/project-popover'
+import { ButtonNoPadding } from './components/styled-components'
 
 export const AuthenticatedApp = () => {
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+
+    const projectButton = (
+        <ButtonNoPadding type={'link'} onClick={() => setIsDrawerOpen(true)}>
+            创建项目
+        </ButtonNoPadding>
+    )
+
     return (
         <Container>
-            <PageHeader />
+            <PageHeader projectButton={projectButton} />
             <Main>
                 <Router>
                     <Routes>
                         <Route
                             path={'/projectList'}
-                            element={<ProjectListScreen />}
+                            element={
+                                <ProjectListScreen
+                                    projectButton={projectButton}
+                                />
+                            }
                         />
                         <Route
                             path="/projectList/:projectId/*"
@@ -33,40 +49,50 @@ export const AuthenticatedApp = () => {
                     </Routes>
                 </Router>
             </Main>
+            <ProjectModal
+                visible={isDrawerOpen}
+                handleClose={setIsDrawerOpen}
+            />
         </Container>
-    );
-};
+    )
+}
 
-const PageHeader = () => {
-    const { logout, user } = useAuth();
-
+const PageHeader = (props: { projectButton: JSX.Element }) => {
     return (
         <Header>
             <HeaderLeft gap={true}>
-                <Button type="link" onClick={resetRoute}>
+                <ButtonNoPadding type="link" onClick={resetRoute}>
                     <SoftwareLog width="18rem" color="#2684ff" />
-                </Button>
-                <h3>项目</h3>
-                <h3>列表</h3>
+                </ButtonNoPadding>
+                <ProjectPopover projectButton={props.projectButton} />
+                <span>列表</span>
             </HeaderLeft>
             <HeaderRight>
-                <Dropdown
-                    overlay={
-                        <Menu>
-                            <Menu.Item key="logout">
-                                <Button type="link" onClick={logout}>
-                                    登出
-                                </Button>
-                            </Menu.Item>
-                        </Menu>
-                    }
-                >
-                    <Button type="link">HI, {user?.username}</Button>
-                </Dropdown>
+                <User />
             </HeaderRight>
         </Header>
-    );
-};
+    )
+}
+
+const User = () => {
+    const { logout, user } = useAuth()
+
+    return (
+        <Dropdown
+            overlay={
+                <Menu>
+                    <Menu.Item key="logout">
+                        <Button type="link" onClick={logout}>
+                            登出
+                        </Button>
+                    </Menu.Item>
+                </Menu>
+            }
+        >
+            <Button type="link">HI, {user?.username}</Button>
+        </Dropdown>
+    )
+}
 
 /**
  * grid 和 flex 各自的使用场景
@@ -77,6 +103,8 @@ const PageHeader = () => {
  * 从布局出发：grid。先规划网格(数量比较固定)，再把元素往里填充
  */
 
+// 这里使用 const 定义的变量却在上面已经使用了，但是没有触发 TDZ 的报错是为啥？
+// 这是因为上面函数里虽然使用了，但是上面函数并没有真正的去运行。
 const Container = styled.div`
     display: grid;
     grid-template-rows: 6rem 1fr;
@@ -85,17 +113,17 @@ const Container = styled.div`
         'header'
         'main';
     height: 100vh; ;
-`;
+`
 
-// grid-area 用于给 grid 子元素起名
+// grid-area 用于给 grid 子元素起名，用于 grid-template-areas
 const Header = styled(Row)`
     grid-area: header;
-`;
-const HeaderLeft = styled(Row)``;
-const HeaderRight = styled.div``;
+`
+const HeaderLeft = styled(Row)``
+const HeaderRight = styled.div``
 const Main = styled.main`
     grid-area: main;
-`;
+`
 // const Nav = styled.main`
 //     grid-area: nav;
 // `;

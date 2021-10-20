@@ -1,20 +1,14 @@
-import { Button, Form, Input } from 'antd';
-import { Project, User } from '../../types';
-import { UserSelect } from '../../components/user-select/user-select';
+import { Form, Input } from 'antd'
+import { Project, User } from '../../types'
+import { UserSelect } from '../../components/user-select/user-select'
 
 interface SearchPanelProps {
-    users: User[];
-    param: Partial<Pick<Project, 'projectName' | 'personId'>>;
-    setParam: (param: SearchPanelProps['param']) => void;
-    reload?: () => void;
+    users: User[]
+    param: Partial<Pick<Project, 'projectName' | 'personId'>>
+    setParam: (param: SearchPanelProps['param']) => void
 }
 
-export const SearchPanel = ({
-    users,
-    param,
-    setParam,
-    reload
-}: SearchPanelProps) => (
+export const SearchPanel = ({ users, param, setParam }: SearchPanelProps) => (
     <Form style={{ marginBottom: '2rem' }} layout="inline">
         <Form.Item>
             <Input
@@ -42,10 +36,7 @@ export const SearchPanel = ({
                 }
             />
         </Form.Item>
-        <Form.Item>
-            <Button onClick={reload}>刷新</Button>
-        </Form.Item>
     </Form>
-);
+)
 
-SearchPanel.whyDidYouRender = false;
+SearchPanel.whyDidYouRender = false
