@@ -14,32 +14,19 @@ import {
 import { ProjectScreen } from './screens/project'
 import { resetRoute } from './utils'
 import { ProjectModal } from './screens/project-list/project-modal'
-import { useState } from 'react'
 import { ProjectPopover } from './components/project-popover/project-popover'
 import { ButtonNoPadding } from './components/styled-components'
 
 export const AuthenticatedApp = () => {
-    const [isDrawerOpen, setIsDrawerOpen] = useState(false)
-
-    const projectButton = (
-        <ButtonNoPadding type={'link'} onClick={() => setIsDrawerOpen(true)}>
-            创建项目
-        </ButtonNoPadding>
-    )
-
     return (
         <Container>
-            <PageHeader projectButton={projectButton} />
+            <PageHeader />
             <Main>
                 <Router>
                     <Routes>
                         <Route
                             path={'/projectList'}
-                            element={
-                                <ProjectListScreen
-                                    projectButton={projectButton}
-                                />
-                            }
+                            element={<ProjectListScreen />}
                         />
                         <Route
                             path="/projectList/:projectId/*"
@@ -49,22 +36,19 @@ export const AuthenticatedApp = () => {
                     </Routes>
                 </Router>
             </Main>
-            <ProjectModal
-                visible={isDrawerOpen}
-                handleClose={setIsDrawerOpen}
-            />
+            <ProjectModal />
         </Container>
     )
 }
 
-const PageHeader = (props: { projectButton: JSX.Element }) => {
+const PageHeader = () => {
     return (
         <Header>
             <HeaderLeft gap={true}>
                 <ButtonNoPadding type="link" onClick={resetRoute}>
                     <SoftwareLog width="18rem" color="#2684ff" />
                 </ButtonNoPadding>
-                <ProjectPopover projectButton={props.projectButton} />
+                <ProjectPopover />
                 <span>列表</span>
             </HeaderLeft>
             <HeaderRight>

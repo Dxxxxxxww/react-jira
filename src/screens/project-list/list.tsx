@@ -6,11 +6,12 @@ import { Pin } from '../../components/pin/pin'
 import { useEditProject } from '../../api/project-list/project-list'
 import { Project } from '../../types'
 import { ButtonNoPadding } from '../../components/styled-components'
+import { useDispatch } from 'react-redux'
+import { projectListActions } from './project-list.slice'
 
 interface ListProp extends TableProps<Project> {
     users: User[]
     refresh?: () => void
-    projectButton: JSX.Element
 }
 
 export const List = ({ users, ...props }: ListProp) => {
@@ -19,6 +20,7 @@ export const List = ({ users, ...props }: ListProp) => {
     // 参数有先后，可以使用科里化来进行关注点分离
     const onEdit = (id: number) => (pin: boolean) =>
         mutate({ id, pin }).then(props.refresh)
+    const dispatch = useDispatch()
     return (
         <Table
             pagination={false}
@@ -86,7 +88,16 @@ export const List = ({ users, ...props }: ListProp) => {
                                 overlay={
                                     <Menu>
                                         <Menu.Item key={'edit'}>
-                                            {props.projectButton || null}
+                                            <ButtonNoPadding
+                                                type={'link'}
+                                                onClick={() =>
+                                                    dispatch(
+                                                        projectListActions.openProjectModal()
+                                                    )
+                                                }
+                                            >
+                                                编辑
+                                            </ButtonNoPadding>
                                         </Menu.Item>
                                     </Menu>
                                 }
