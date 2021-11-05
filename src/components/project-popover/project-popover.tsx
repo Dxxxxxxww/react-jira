@@ -1,8 +1,9 @@
 import { Divider, List, Popover, Typography } from 'antd'
 import { useProjectList } from '../../api/project-list/project-list'
 import styled from '@emotion/styled'
-import { ButtonNoPadding } from '../styled-components'
+import { ButtonNoPadding } from '../lib'
 import { useProjectModal } from '../../screens/project-list/utils'
+import { Project } from '../../types'
 
 export const ProjectPopover = () => {
     const { data } = useProjectList()
@@ -14,8 +15,8 @@ export const ProjectPopover = () => {
             <Typography.Text type="secondary">收藏项目</Typography.Text>
             <List>
                 {projectList
-                    ?.filter((project) => project.pin)
-                    .map((project) => (
+                    ?.filter((project: Project) => project.pin)
+                    .map((project: Project) => (
                         <List.Item key={project.id}>
                             <List.Item.Meta title={project.projectName} />
                         </List.Item>

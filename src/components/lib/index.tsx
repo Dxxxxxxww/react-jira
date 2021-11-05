@@ -1,6 +1,8 @@
 import styled from '@emotion/styled'
 import { Button, Spin, Typography } from 'antd'
 
+const isError = (value: any): value is Error => value?.message
+
 export const FullPageLoading = () => {
     return (
         <FullPage>
@@ -12,10 +14,15 @@ export const FullPageLoading = () => {
 export const FullPageError = ({ error }: { error: Error | null }) => {
     return (
         <FullPage>
-            <Typography.Text type="danger">{error?.message}</Typography.Text>
+            <ErrorBox error={error} />
             <Button type="link">点此返回登录页面</Button>
         </FullPage>
     )
+}
+
+export const ErrorBox = ({ error }: { error: unknown }) => {
+    if (!isError(error)) return null
+    return <Typography.Text type="danger">{error?.message}</Typography.Text>
 }
 
 export const ButtonNoPadding = styled(Button)`

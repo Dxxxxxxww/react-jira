@@ -15,7 +15,7 @@ import { ProjectScreen } from './screens/project'
 import { resetRoute } from './utils'
 import { ProjectModal } from './screens/project-list/project-modal'
 import { ProjectPopover } from './components/project-popover/project-popover'
-import { ButtonNoPadding } from './components/styled-components'
+import { ButtonNoPadding } from './components/lib'
 
 export const AuthenticatedApp = () => {
     return (

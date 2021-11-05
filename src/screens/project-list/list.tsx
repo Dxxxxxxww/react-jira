@@ -5,20 +5,18 @@ import { Link } from 'react-router-dom'
 import { Pin } from '../../components/pin/pin'
 import { useEditProject } from '../../api/project-list/project-list'
 import { Project } from '../../types'
-import { ButtonNoPadding } from '../../components/styled-components'
+import { ButtonNoPadding } from '../../components/lib'
 import { useProjectModal } from './utils'
 
 interface ListProp extends TableProps<Project> {
     users: User[]
-    refresh?: () => void
 }
 
 export const List = ({ users, ...props }: ListProp) => {
     const { mutate } = useEditProject()
     // project.id 这个参数是先知道的，而 pin 需要等到点击事件触发的时候才知道，
     // 参数有先后，可以使用科里化来进行关注点分离
-    const onEdit = (id: number) => (pin: boolean) =>
-        mutate({ id, pin }).then(props.refresh)
+    const onEdit = (id: number) => (pin: boolean) => mutate({ id, pin })
 
     const { open } = useProjectModal()
     return (

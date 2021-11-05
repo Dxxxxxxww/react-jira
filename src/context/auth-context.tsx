@@ -4,7 +4,7 @@ import { User } from '../types'
 import { http } from 'utils/http'
 import { useMount } from 'utils'
 import { useAsync } from '../utils/use-async'
-import { FullPageError, FullPageLoading } from '../components/styled-components'
+import { FullPageError, FullPageLoading } from '../components/lib'
 
 interface AuthForm {
     username: string

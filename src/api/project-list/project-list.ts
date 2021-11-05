@@ -3,6 +3,7 @@ import { useAsync } from '../../utils/use-async'
 import { cleanObject, useDebounce } from '../../utils'
 import { useCallback, useEffect } from 'react'
 import { Project } from '../../types'
+import { useQuery } from 'react-query'
 
 interface ProjectsResult {
     projectList: Project[]
@@ -10,19 +11,22 @@ interface ProjectsResult {
 
 export const useProjectList = (params?: Partial<Project>) => {
     const client = useHttp()
-    const { run, ...result } = useAsync<ProjectsResult>()
-    const debouncedParam = useDebounce(params, 200)
-    const fetchProject = useCallback(
-        () => client(`projects`, { data: cleanObject(params ?? {}) }),
-        [params, client]
+    return useQuery(['projects', params], () =>
+        client('projects', { data: params })
     )
-
-    // useEffect 的回调参数不能加上 async
-    useEffect(() => {
-        run(fetchProject(), { retry: fetchProject })
-    }, [debouncedParam, fetchProject, run])
-
-    return result
+    // const { run, ...result } = useAsync<ProjectsResult>()
+    // const debouncedParam = useDebounce(params, 200)
+    // const fetchProject = useCallback(
+    //     () => client(`projects`, { data: cleanObject(params ?? {}) }),
+    //     [params, client]
+    // )
+    //
+    // // useEffect 的回调参数不能加上 async
+    // useEffect(() => {
+    //     run(fetchProject(), { retry: fetchProject })
+    // }, [debouncedParam, fetchProject, run])
+    //
+    // return result
 }
 
 export const useEditProject = () => {

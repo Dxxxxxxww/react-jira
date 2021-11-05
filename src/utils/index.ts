@@ -22,6 +22,7 @@ export const cleanObject = (object: { [key: string]: unknown }) => {
 }
 
 export const useMount = (callback: () => void) => {
+    // 传入的 callback 必须是一个 useCallback 产生的函数，否则会无限重复执行
     useEffect(() => {
         callback()
     }, [callback])
