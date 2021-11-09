@@ -1,7 +1,7 @@
 import { Login } from './login'
 import { Register } from './register'
 import { useState } from 'react'
-import { Button, Card, Divider, Typography } from 'antd'
+import { Button, Card, Divider } from 'antd'
 import styled from '@emotion/styled'
 import logo from 'assets/img/logo.svg'
 import left from 'assets/img/left.svg'
