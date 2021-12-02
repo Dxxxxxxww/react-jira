@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
 import { Button, Spin, Typography } from 'antd'
 
+// 类型守卫
 const isError = (value: any): value is Error => value?.message
 
 export const FullPageLoading = () => {

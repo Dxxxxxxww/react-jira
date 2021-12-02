@@ -1,6 +1,6 @@
-import { BaseValue } from '../../types';
-import { Select } from 'antd';
-import React from 'react';
+import { BaseValue } from '../../types'
+import { Select } from 'antd'
+import React from 'react'
 
 // 这里也可以直接从 antd 里面找到 Select 组件prop 的类型定义 ==> SelectProps
 // 这里使用 react 自带的方法去查询类型
@@ -9,13 +9,13 @@ interface selectProps
         React.ComponentProps<typeof Select>,
         'value' | 'onChange' | 'options'
     > {
-    value: BaseValue | undefined | null;
-    onChange: (value?: number) => void;
-    options: { name: string; id: number }[];
-    defaultOptionName?: string;
+    value?: BaseValue | undefined | null
+    onChange?: (value?: number) => void
+    options?: { name: string; id: number }[]
+    defaultOptionName?: string
 }
 
-const toNumber = (value: unknown) => (isNaN(Number(value)) ? 0 : Number(value));
+const toNumber = (value: unknown) => (isNaN(Number(value)) ? 0 : Number(value))
 
 /**
  * value 可以传入多种类型的值，但是会被转为 number
@@ -33,7 +33,7 @@ export const IdSelect = ({
         <Select
             value={toNumber(value)}
             {...restProps}
-            onChange={(value) => onChange(toNumber(value) || undefined)}
+            onChange={(value) => onChange?.(toNumber(value) || undefined)}
         >
             {defaultOptionName ? (
                 <Select.Option value={0}>{defaultOptionName}</Select.Option>
@@ -44,5 +44,5 @@ export const IdSelect = ({
                 </Select.Option>
             ))}
         </Select>
-    );
-};
+    )
+}

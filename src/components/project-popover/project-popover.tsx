@@ -7,20 +7,20 @@ import { Project } from '../../types'
 
 export const ProjectPopover = () => {
     const { data } = useProjectList()
-    const projectList = data?.projectList
     const { open } = useProjectModal()
+    const pinnedProjects = data?.projectList?.filter(
+        (project: Project) => project.pin
+    )
 
     const content = (
         <ContentContainer>
             <Typography.Text type="secondary">收藏项目</Typography.Text>
             <List>
-                {projectList
-                    ?.filter((project: Project) => project.pin)
-                    .map((project: Project) => (
-                        <List.Item key={project.id}>
-                            <List.Item.Meta title={project.projectName} />
-                        </List.Item>
-                    ))}
+                {pinnedProjects?.map((project: Project) => (
+                    <List.Item key={project.id}>
+                        <List.Item.Meta title={project.projectName} />
+                    </List.Item>
+                ))}
             </List>
             <Divider />
             <ButtonNoPadding type={'link'} onClick={open}>

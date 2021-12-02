@@ -14,11 +14,12 @@ interface ListProp extends TableProps<Project> {
 
 export const List = ({ users, ...props }: ListProp) => {
     const { mutate } = useEditProject()
+    const { startEdit } = useProjectModal()
     // project.id 这个参数是先知道的，而 pin 需要等到点击事件触发的时候才知道，
     // 参数有先后，可以使用科里化来进行关注点分离
-    const onEdit = (id: number) => (pin: boolean) => mutate({ id, pin })
+    const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin })
+    const editProject = (id: number) => () => startEdit(id)
 
-    const { open } = useProjectModal()
     return (
         <Table
             pagination={false}
@@ -30,7 +31,7 @@ export const List = ({ users, ...props }: ListProp) => {
                         return (
                             <Pin
                                 checked={project.pin}
-                                onChange={onEdit(project.id)}
+                                onChange={pinProject(project.id)}
                             />
                         )
                     }
@@ -85,13 +86,14 @@ export const List = ({ users, ...props }: ListProp) => {
                             <Dropdown
                                 overlay={
                                     <Menu>
-                                        <Menu.Item key={'edit'}>
-                                            <ButtonNoPadding
-                                                type={'link'}
-                                                onClick={open}
-                                            >
-                                                编辑
-                                            </ButtonNoPadding>
+                                        <Menu.Item
+                                            key={'edit'}
+                                            onClick={editProject(project.id)}
+                                        >
+                                            编辑
+                                        </Menu.Item>
+                                        <Menu.Item key={'delete'}>
+                                            删除
                                         </Menu.Item>
                                     </Menu>
                                 }
