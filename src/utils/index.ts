@@ -12,6 +12,7 @@ export const isVoid = (value: unknown) =>
  */
 export const cleanObject = (object?: { [key: string]: unknown }) => {
     const result = { ...object }
+    debugger
     Object.keys(result).forEach((key) => {
         const value = result[key]
         if (isVoid(value)) {

@@ -6,11 +6,11 @@ import { Row } from 'antd'
 import { useProjectList } from '../../api/project-list/project-list'
 import { useUsers } from '../../api/users/users'
 import { ButtonNoPadding, ErrorBox } from '../../components/lib'
-import { useProjectModal } from './utils'
+import { useProjectModal, useProjectsSearchParams } from './utils'
 
 export const ProjectListScreen = () => {
     useDocumentTitle('项目列表')
-    const [param, setParam] = useUrlQueryParam(['name', 'personId'])
+    const [param, setParam] = useProjectsSearchParams()
     const { isLoading, error, data } = useProjectList(param)
     const { users } = useUsers()
     const { open } = useProjectModal()

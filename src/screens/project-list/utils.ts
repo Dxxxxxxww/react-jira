@@ -1,5 +1,6 @@
 import { useUrlQueryParam } from '../../utils'
 import { useProjectInfo } from '../../api/project-list/project-list'
+import { useMemo } from 'react'
 
 export const useProjectModal = () => {
     // 从 url 中获取创建状态
@@ -34,4 +35,21 @@ export const useProjectModal = () => {
         editingProject: editingProject?.projectInfo,
         isLoading
     }
+}
+
+// 项目列表搜索的参数
+export const useProjectsSearchParams = () => {
+    const [param, setParam] = useUrlQueryParam(['name', 'personId'])
+    return [
+        useMemo(
+            () => ({ ...param, personId: Number(param.personId) || undefined }),
+            [param]
+        ),
+        setParam
+    ] as const
+}
+
+export const useProjectsQueryKey = () => {
+    const [param] = useProjectsSearchParams()
+    return ['projects', param]
 }

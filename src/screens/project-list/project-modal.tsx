@@ -1,5 +1,5 @@
 import { Button, Drawer, Form, Input, Spin } from 'antd'
-import { useProjectModal } from './utils'
+import { useProjectModal, useProjectsQueryKey } from './utils'
 import { UserSelect } from '../../components/user-select/user-select'
 import {
     useAddProject,
@@ -16,7 +16,11 @@ export const ProjectModal = () => {
         useProjectModal()
     const useMutateProjet = editingProject ? useEditProject : useAddProject
     // 获取请求函数及对应状态
-    const { mutateAsync, error, isLoading: mutateLoading } = useMutateProjet()
+    const {
+        mutateAsync,
+        error,
+        isLoading: mutateLoading
+    } = useMutateProjet(useProjectsQueryKey())
     // 获取 form 实例
     const [form] = useForm()
     // 表单提交
@@ -26,8 +30,6 @@ export const ProjectModal = () => {
             close()
         })
     }
-
-    setTimeout(() => console.log(editingProject), 3000)
 
     const title = editingProject ? '编辑项目' : '创建项目'
     // 当项目信息改变时，重置表单
