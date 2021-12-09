@@ -107,7 +107,8 @@ export const useDocumentTitle = (
 export const resetRoute = () => (window.location.href = window.location.origin)
 
 export const useUrlQueryParam = <K extends string>(keys: K[]) => {
-    const [searchParams, setSearchParams] = useSearchParams()
+    const [searchParams] = useSearchParams()
+    const setSearchParams = useSetUrlSearchParam()
     // useMemo 会返回一个 被缓存的值，而 useEffect 返回的是 销毁钩子
     // 这里如果不使用 useMemo 的话，每次组件重新渲染，这里就会返回一个新生成的对象，
     // 由于新老对象的地址不同（===），就会被认为是不同的对象，继而又触发渲染，
@@ -126,13 +127,18 @@ export const useUrlQueryParam = <K extends string>(keys: K[]) => {
                 }, {} as { [key in K]: any }),
             [searchParams, stateKeys]
         ),
-        (params: Partial<{ [key in K]: unknown }>) => {
-            // Object.fromEntries 把键值对列表转换为一个对象。Object.entries 的逆操作
-            const o = cleanObject({
-                ...Object.fromEntries(searchParams),
-                ...params
-            }) as URLSearchParamsInit
-            return setSearchParams(o)
-        }
+        (params: Partial<{ [key in K]: unknown }>) => setSearchParams(params)
     ] as const
+}
+// 设置 url 参数
+export const useSetUrlSearchParam = () => {
+    const [searchParams, setSearchParams] = useSearchParams()
+    return (params: { [key in string]: unknown }) => {
+        // Object.fromEntries 把键值对列表转换为一个对象。Object.entries 的逆操作
+        const o = cleanObject({
+            ...Object.fromEntries(searchParams),
+            ...params
+        }) as URLSearchParamsInit
+        return setSearchParams(o)
+    }
 }

@@ -1,4 +1,4 @@
-import { useUrlQueryParam } from '../../utils'
+import { useSetUrlSearchParam, useUrlQueryParam } from '../../utils'
 import { useProjectInfo } from '../../api/project-list/project-list'
 import { useMemo } from 'react'
 
@@ -16,11 +16,14 @@ export const useProjectModal = () => {
         Number(editingProjectId)
     )
 
+    const setSearchParams = useSetUrlSearchParam()
     const open = () => setProjectCreate({ projectCreate: true })
     // 赋值 undefined 可以通过 cleanObject 让字段不出现在 url 当中
     const close = () => {
-        setProjectCreate({ projectCreate: undefined })
-        setEditingProjectId({ editingProjectId: undefined })
+        setSearchParams({
+            projectCreate: '',
+            editingProjectId: ''
+        })
     }
     const startEdit = (id: number) => {
         setEditingProjectId({ editingProjectId: id })
