@@ -30,6 +30,11 @@ export const ProjectModal = () => {
             close()
         })
     }
+    // 关闭模态窗
+    const closeModal = () => {
+        form.resetFields()
+        close()
+    }
 
     const title = editingProject ? '编辑项目' : '创建项目'
     // 当项目信息改变时，重置表单
@@ -42,7 +47,7 @@ export const ProjectModal = () => {
             forceRender={true}
             width={'100%'}
             visible={projectModalOpen}
-            onClose={close}
+            onClose={closeModal}
         >
             <Container>
                 {isLoading ? (
