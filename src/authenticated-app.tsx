@@ -32,7 +32,10 @@ export const AuthenticatedApp = () => {
                             path="/projectList/:projectId/*"
                             element={<ProjectScreen />}
                         />
-                        <Navigate to={'/projectList'} />
+                        <Navigate
+                            to={window.location.pathname + '/projectList'}
+                            replace={true}
+                        />
                     </Routes>
                 </Main>
                 <ProjectModal />
